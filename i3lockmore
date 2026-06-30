@@ -172,11 +172,11 @@ if [[ "$USE_IMAGE_FILL" == true ]]; then
     screenarea=${screenarea// /}
     screens=( $(xrandr --current | grep -oP '\d+x\d+\+\d+\+\d+') )
 
-    convert -size $screenarea xc:black $GRAYSCALE -quality 11 png24:"$BACKGROUND"
+    magick -size $screenarea xc:black $GRAYSCALE -quality 11 png24:"$BACKGROUND"
 
     if check_file_exists "$IMAGE"; then
         for screen in "${screens[@]}"; do
-            convert "$BACKGROUND" \
+            magick "$BACKGROUND" \
                 \( "$IMAGE" -gravity Center -resize ${screen%%+*}^ -extent ${screen%%+*} \) \
                 -gravity NorthWest -geometry +${screen#*+} -composite \
                 $GRAYSCALE -quality 11 png24:"$BACKGROUND"
@@ -192,10 +192,10 @@ if [[ "$USE_IMAGE_MAXIMIZE" == true ]]; then
     screenarea=${screenarea// /}
 
     if check_file_exists "$IMAGE"; then
-        convert "$IMAGE" -gravity Center -resize $screenarea^ -extent $screenarea \
+        magick "$IMAGE" -gravity Center -resize $screenarea^ -extent $screenarea \
             $GRAYSCALE -quality 11 png24:"$BACKGROUND"
     else
-        convert -size $screenarea xc:black $GRAYSCALE -quality 11 png24:"$BACKGROUND"
+        magick -size $screenarea xc:black $GRAYSCALE -quality 11 png24:"$BACKGROUND"
     fi
 fi
 
@@ -204,7 +204,7 @@ if [[ "$USE_BLUR" == true ]]; then
     make_screenshot
 
     size=$(identify -format "%[fx:w]x%[fx:h]" "$BACKGROUND")
-    convert "$BACKGROUND" -scale $BLUR_FACTOR% $GRAYSCALE -resize $size\! -quality 11 png24:"$BACKGROUND"
+    magick "$BACKGROUND" -scale $BLUR_FACTOR% $GRAYSCALE -resize $size\! -quality 11 png24:"$BACKGROUND"
 fi
 
 
@@ -212,7 +212,7 @@ if [[ "$USE_PIXELATE" == true ]]; then
     make_screenshot
 
     size=$(identify -format "%[fx:w]x%[fx:h]" "$BACKGROUND")
-    convert "$BACKGROUND" -scale $PIXELATE_SCALEFACTOR% $GRAYSCALE -sample $size\! -quality 11 png24:"$BACKGROUND"
+    magick "$BACKGROUND" -scale $PIXELATE_SCALEFACTOR% $GRAYSCALE -sample $size\! -quality 11 png24:"$BACKGROUND"
 fi
 
 
@@ -223,7 +223,7 @@ if [[ "$USE_LOCK_ICON" == true ]]; then
 
     if check_file_exists "$LOCK_ICON"; then
         for screen in "${screens[@]}"; do
-            convert "$BACKGROUND" \
+            magick "$BACKGROUND" \
                 \( "$LOCK_ICON" -gravity Center -background none -extent ${screen%%+*} \) \
                 -gravity NorthWest -geometry +${screen#*+} -composite \
                 $GRAYSCALE -quality 11 png24:"$BACKGROUND"
