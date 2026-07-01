@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 USE_PIXELATE=false
 PIXELATE_SCALEFACTOR=4
 USE_DPMS=false
@@ -16,11 +17,9 @@ USE_IMAGE_MAXIMIZE=false
 IMAGE=
 USE_LOCK_ICON=false
 LOCK_ICON="/usr/share/i3lockmore/lock-icon.png"
+MAGICK_CMD=$(command -v convert)
+[ ! -L "$MAGICK_CMD" ] || MAGICK_CMD=$(command -v magick)
 
-MAGICK_CMD=$(which convert)
-[ ! -L "$MAGICK_CMD" ] || MAGICK_CMD=$(which magick)
-
-exit 1
 function print_help {
 cat <<- EOF
 Extension for the screenlocker "i3lock" adding some high-level features:
