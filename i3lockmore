@@ -18,11 +18,9 @@ USE_LOCK_ICON=false
 LOCK_ICON="/usr/share/i3lockmore/lock-icon.png"
 
 MAGICK_CMD=$(which convert)
-if [ -L "$MAGICK_CMD" ] 
-then 
-	MAGICK_CMD=$(which magick)
-fi
+[ ! -L "$MAGICK_CMD" ] || MAGICK_CMD=$(which magick)
 
+exit 1
 function print_help {
 cat <<- EOF
 Extension for the screenlocker "i3lock" adding some high-level features:
