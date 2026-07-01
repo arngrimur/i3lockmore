@@ -16,9 +16,12 @@ USE_IMAGE_MAXIMIZE=false
 IMAGE=
 USE_LOCK_ICON=false
 LOCK_ICON="/usr/share/i3lockmore/lock-icon.png"
-MAGICK_CMD=$(which magick)
-MAGICK_CMD=$([ -f "$MAGICK_CMD" ] && [ ! -L "$MAGICK_CMD" ] && echo "$MAGICK_CMD" || $(which convert))
 
+MAGICK_CMD=$(which convert)
+if [ -L "$MAGICK_CMD" ] 
+then 
+	MAGICK_CMD=$(which magick)
+fi
 
 function print_help {
 cat <<- EOF
